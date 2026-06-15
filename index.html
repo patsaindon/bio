@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patrick Tremblay · DevOps & Automation Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #0D1117;
+    --bg2:     #161B22;
+    --bg3:     #21262D;
+    --border:  #30363D;
+    --text:    #E6EDF3;
+    --muted:   #8B949E;
+    --accent:  #2563EB;
+    --accent2: #3B82F6;
+    --green:   #3FB950;
+    --mono:    'JetBrains Mono', monospace;
+    --sans:    'Inter', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.7; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 56px;
+    background: rgba(13,17,23,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-weight: 700; font-size: .95rem; color: var(--accent2); text-decoration: none; letter-spacing: -.02em; }
+  .nav-logo span { color: var(--muted); }
+  .nav-right { display: flex; align-items: center; gap: 2rem; }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+  .nav-links a { font-family: var(--mono); font-size: .78rem; color: var(--muted); text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  /* Lang switcher */
+  .lang-btn {
+    font-family: var(--mono); font-size: .75rem; font-weight: 700;
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 6px; padding: .3rem .7rem;
+    cursor: pointer; transition: all .2s; letter-spacing: .04em;
+    display: flex; gap: .35rem; align-items: center;
+  }
+  .lang-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+  .lang-btn .sep { color: var(--border); }
+  .lang-btn .active { color: var(--accent2); }
+
+  /* ── HERO ── */
+  #home {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 6rem 2rem 4rem; max-width: 860px; margin: 0 auto;
+  }
+  .hero-eyebrow { font-family: var(--mono); font-size: .85rem; color: var(--green); margin-bottom: 1.25rem; letter-spacing: .04em; }
+  .hero-eyebrow::before { content: '$ '; color: var(--muted); }
+  h1 { font-family: var(--mono); font-size: clamp(2rem,5vw,3.25rem); font-weight: 700; line-height: 1.15; letter-spacing: -.03em; margin-bottom: 1.5rem; }
+  h1 .typed-cursor { display: inline-block; width: 3px; height: 1em; background: var(--accent2); margin-left: 4px; vertical-align: middle; animation: blink .9s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 580px; margin-bottom: 2.5rem; line-height: 1.85; }
+  .hero-sub strong { color: var(--text); font-weight: 500; }
+  .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn { font-family: var(--mono); font-size: .85rem; padding: .65rem 1.4rem; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all .2s; cursor: pointer; }
+  .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+  .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); }
+  .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--muted); }
+  .hero-badges { margin-top: 3rem; display: flex; gap: .75rem; flex-wrap: wrap; }
+  .badge { font-family: var(--mono); font-size: .72rem; padding: .3rem .75rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; color: var(--muted); }
+  .badge.hi { border-color: #2563EB44; color: var(--accent2); background: #2563EB11; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; max-width: 860px; margin: 0 auto; }
+  .section-label { font-family: var(--mono); font-size: .75rem; color: var(--accent2); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem; }
+  h2 { font-family: var(--mono); font-size: clamp(1.5rem,3vw,2rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 1rem; color: var(--text); }
+  .divider { width: 48px; height: 2px; background: var(--accent); margin-bottom: 2.5rem; }
+
+  /* ── ABOUT ── */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-text p { color: var(--muted); margin-bottom: 1rem; }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .quick-facts { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+  .quick-facts h3 { font-family: var(--mono); font-size: .8rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1.25rem; }
+  .fact-row { display: flex; gap: .75rem; margin-bottom: .9rem; font-size: .9rem; }
+  .fact-icon { font-size: 1rem; flex-shrink: 0; }
+  .fact-label { color: var(--muted); font-size: .8rem; }
+  .fact-val { color: var(--text); font-weight: 500; }
+
+  /* ── SKILLS ── */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 1.25rem; margin-top: .5rem; }
+  .skill-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; transition: border-color .2s, transform .2s; }
+  .skill-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .skill-card h3 { font-family: var(--mono); font-size: .85rem; color: var(--accent2); margin-bottom: .75rem; font-weight: 600; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .stag { font-family: var(--mono); font-size: .7rem; padding: .2rem .55rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; color: var(--muted); }
+
+  /* ── PROJECTS ── */
+  .projects-grid { display: grid; gap: 1.25rem; }
+  .project-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem; transition: border-color .2s; }
+  .project-card:hover { border-color: var(--accent); }
+  .project-card h3 { font-family: var(--mono); font-size: 1rem; color: var(--text); margin-bottom: .5rem; }
+  .project-card p { font-size: .9rem; color: var(--muted); margin-bottom: .9rem; }
+  .project-langs { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .lang-dot { font-family: var(--mono); font-size: .72rem; color: var(--muted); display: flex; align-items: center; gap: .35rem; }
+  .lang-dot::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--dot-color, var(--muted)); }
+  .project-link { align-self: start; font-family: var(--mono); font-size: .75rem; color: var(--muted); text-decoration: none; border: 1px solid var(--border); padding: .35rem .75rem; border-radius: 6px; white-space: nowrap; transition: all .2s; }
+  .project-link:hover { color: var(--text); border-color: var(--muted); }
+
+  /* ── CONTACT ── */
+  .contact-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 2.5rem; text-align: center; }
+  .contact-box p { color: var(--muted); max-width: 500px; margin: 0 auto 2rem; font-size: 1rem; }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+  /* ── FOOTER ── */
+  footer { border-top: 1px solid var(--border); text-align: center; padding: 2rem; font-family: var(--mono); font-size: .75rem; color: var(--muted); }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+
+  @media (max-width: 500px) {
+    .nav-links { display: none; }
+    .project-card { grid-template-columns: 1fr; }
+    .project-link { align-self: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">patrick<span>.dev</span></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about" data-i18n="nav.about"></a></li>
+      <li><a href="#skills" data-i18n="nav.skills"></a></li>
+      <li><a href="#projects" data-i18n="nav.projects"></a></li>
+      <li><a href="#contact" data-i18n="nav.contact"></a></li>
+    </ul>
+    <button class="lang-btn" id="langToggle" onclick="toggleLang()">
+      <span id="langEN" class="active">EN</span><span class="sep">|</span><span id="langFR">FR</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <p class="hero-eyebrow" data-i18n="hero.eyebrow"></p>
+  <h1 id="typed-title"></h1>
+  <p class="hero-sub" data-i18n-html="hero.sub"></p>
+  <div class="btn-group">
+    <a href="#projects" class="btn btn-primary" data-i18n="hero.cta1"></a>
+    <a href="#contact" class="btn btn-secondary" data-i18n="hero.cta2"></a>
+  </div>
+  <div class="hero-badges">
+    <span class="badge hi" data-i18n="hero.badge0"></span>
+    <span class="badge">Azure DevOps</span>
+    <span class="badge">PowerShell</span>
+    <span class="badge">Chocolatey</span>
+    <span class="badge">GitHub Actions</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label" data-i18n="about.label"></p>
+  <h2 data-i18n="about.title"></h2>
+  <div class="divider"></div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p data-i18n-html="about.p1"></p>
+      <p data-i18n-html="about.p2"></p>
+      <p data-i18n-html="about.p3"></p>
+    </div>
+    <div class="quick-facts">
+      <h3 data-i18n="about.facts.title"></h3>
+      <div class="fact-row">
+        <span class="fact-icon">📍</span>
+        <div>
+          <div class="fact-label" data-i18n="about.facts.loc.label"></div>
+          <div class="fact-val">Québec, Canada → Houston, TX</div>
+        </div>
+      </div>
+      <div class="fact-row">
+        <span class="fact-icon">💼</span>
+        <div>
+          <div class="fact-label" data-i18n="about.facts.focus.label"></div>
+          <div class="fact-val" data-i18n="about.facts.focus.val"></div>
+        </div>
+      </div>
+      <div class="fact-row">
+        <span class="fact-icon">🛠️</span>
+        <div>
+          <div class="fact-label" data-i18n="about.facts.stack.label"></div>
+          <div class="fact-val">PowerShell · Azure DevOps · Chocolatey</div>
+        </div>
+      </div>
+      <div class="fact-row">
+        <span class="fact-icon">🎯</span>
+        <div>
+          <div class="fact-label" data-i18n="about.facts.certs.label"></div>
+          <div class="fact-val">AZ-104 · AZ-305 · AWS SAA</div>
+        </div>
+      </div>
+      <div class="fact-row">
+        <span class="fact-icon">🌐</span>
+        <div>
+          <div class="fact-label" data-i18n="about.facts.lang.label"></div>
+          <div class="fact-val" data-i18n="about.facts.lang.val"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label" data-i18n="skills.label"></p>
+  <h2 data-i18n="skills.title"></h2>
+  <div class="divider"></div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <h3 data-i18n="skills.cicd.title"></h3>
+      <div class="skill-tags">
+        <span class="stag">Azure DevOps</span>
+        <span class="stag">GitHub Actions</span>
+        <span class="stag">YAML pipelines</span>
+        <span class="stag" data-i18n="skills.cicd.t4"></span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <h3 data-i18n="skills.pkg.title"></h3>
+      <div class="skill-tags">
+        <span class="stag">Chocolatey</span>
+        <span class="stag">NuSpec</span>
+        <span class="stag">SCCM / Intune</span>
+        <span class="stag" data-i18n="skills.pkg.t4"></span>
+        <span class="stag" data-i18n="skills.pkg.t5"></span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <h3 data-i18n="skills.script.title"></h3>
+      <div class="skill-tags">
+        <span class="stag">PowerShell</span>
+        <span class="stag">Bash</span>
+        <span class="stag">Python</span>
+        <span class="stag" data-i18n="skills.script.t4"></span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <h3 data-i18n="skills.cloud.title"></h3>
+      <div class="skill-tags">
+        <span class="stag">Microsoft Azure</span>
+        <span class="stag">Azure Repos</span>
+        <span class="stag" data-i18n="skills.cloud.t3"></span>
+        <span class="stag">Entra ID</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <h3 data-i18n="skills.endpoint.title"></h3>
+      <div class="skill-tags">
+        <span class="stag">SCCM</span>
+        <span class="stag">Intune / MDM</span>
+        <span class="stag">Windows Server</span>
+        <span class="stag">Group Policy</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <h3 data-i18n="skills.vcs.title"></h3>
+      <div class="skill-tags">
+        <span class="stag">Git</span>
+        <span class="stag">GitHub</span>
+        <span class="stag">Azure Repos</span>
+        <span class="stag">VS Code</span>
+        <span class="stag">Copilot</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label" data-i18n="projects.label"></p>
+  <h2 data-i18n="projects.title"></h2>
+  <div class="divider"></div>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div>
+        <h3>Temurin JDK · Chocolatey Package</h3>
+        <p data-i18n="projects.p1.desc"></p>
+        <div class="project-langs">
+          <span class="lang-dot" style="--dot-color:#012456">PowerShell</span>
+          <span class="lang-dot" style="--dot-color:#e34c26">NuSpec / XML</span>
+          <span class="lang-dot" style="--dot-color:#2088FF">GitHub Actions</span>
+        </div>
+      </div>
+      <a href="https://github.com/" class="project-link">↗ GitHub</a>
+    </div>
+
+    <div class="project-card">
+      <div>
+        <h3 data-i18n="projects.p2.title"></h3>
+        <p data-i18n="projects.p2.desc"></p>
+        <div class="project-langs">
+          <span class="lang-dot" style="--dot-color:#2088FF">GitHub Actions</span>
+          <span class="lang-dot" style="--dot-color:#012456">PowerShell</span>
+        </div>
+      </div>
+      <a href="https://github.com/" class="project-link">↗ GitHub</a>
+    </div>
+
+    <div class="project-card">
+      <div>
+        <h3 data-i18n="projects.p3.title"></h3>
+        <p data-i18n="projects.p3.desc"></p>
+        <div class="project-langs">
+          <span class="lang-dot" style="--dot-color:#0078D4">Azure DevOps</span>
+          <span class="lang-dot" style="--dot-color:#012456">PowerShell</span>
+          <span class="lang-dot" style="--dot-color:#b07219">Java / OPatch</span>
+        </div>
+      </div>
+      <a href="https://github.com/" class="project-link">↗ GitHub</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label" data-i18n="contact.label"></p>
+  <h2 data-i18n="contact.title"></h2>
+  <div class="divider"></div>
+  <div class="contact-box">
+    <p data-i18n="contact.desc"></p>
+    <div class="contact-links">
+      <a href="mailto:hello@example.com" class="btn btn-primary" data-i18n="contact.email"></a>
+      <a href="https://linkedin.com/in/yourprofile" class="btn btn-secondary">LinkedIn</a>
+      <a href="https://github.com/yourusername" class="btn btn-secondary">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p data-i18n-html="footer.text"></p>
+</footer>
+
+<script>
+// ── TRANSLATIONS ──────────────────────────────────────────────
+const i18n = {
+  en: {
+    "nav.about":    "about",
+    "nav.skills":   "skills",
+    "nav.projects": "projects",
+    "nav.contact":  "contact",
+
+    "hero.eyebrow": "whoami",
+    "hero.sub":     "I build <strong>Windows automation pipelines</strong>, package software at scale with <strong>Chocolatey</strong>, and wire up CI/CD workflows in <strong>Azure DevOps & GitHub Actions</strong>. Based in Québec — relocating to <strong>Houston, TX</strong> in 2025–26.",
+    "hero.cta1":    "View projects",
+    "hero.cta2":    "Get in touch",
+    "hero.badge0":  "Available for opportunities · Houston area",
+
+    "about.label":  "// about me",
+    "about.title":  "Background",
+    "about.p1":     "I'm an IT professional with hands-on experience in <strong>enterprise software deployment, Windows endpoint management</strong>, and pipeline automation. I've spent years packaging, patching, and shipping software reliably across large fleets — cutting manual effort and making deployments repeatable.",
+    "about.p2":     "Outside my primary role, I maintain open-source Chocolatey community packages and contribute automation tooling to GitHub. I'm passionate about clean YAML, idempotent scripts, and workflows that simply work.",
+    "about.p3":     "I'm currently targeting roles in the <strong>Houston, TX</strong> market — particularly with energy, industrial, or tech companies that value serious Windows/DevOps expertise.",
+    "about.facts.title":       "Quick facts",
+    "about.facts.loc.label":   "Location",
+    "about.facts.focus.label": "Focus",
+    "about.facts.focus.val":   "DevOps · Software Packaging · Automation",
+    "about.facts.stack.label": "Primary stack",
+    "about.facts.certs.label": "Pursuing",
+    "about.facts.lang.label":  "Languages",
+    "about.facts.lang.val":    "French (native) · English (fluent)",
+
+    "skills.label":         "// skills & tools",
+    "skills.title":         "Technical Stack",
+    "skills.cicd.title":    "CI/CD & Pipelines",
+    "skills.cicd.t4":       "Pipeline templates",
+    "skills.pkg.title":     "Software Packaging",
+    "skills.pkg.t4":        "Silent installs",
+    "skills.pkg.t5":        "Auto-update",
+    "skills.script.title":  "Scripting & Automation",
+    "skills.script.t4":     "Task scheduling",
+    "skills.cloud.title":   "Cloud & Infrastructure",
+    "skills.cloud.t3":      "VM management",
+    "skills.endpoint.title":"Endpoint Management",
+    "skills.vcs.title":     "Version Control & Tooling",
+
+    "projects.label": "// projects",
+    "projects.title": "Featured Work",
+    "projects.p1.desc": "Community Chocolatey package for Eclipse Adoptium Temurin 25 (JDK). Automated version detection, hash verification, and GitHub Actions release pipeline. Keeps the package in sync with upstream Adoptium releases without manual intervention.",
+    "projects.p2.title": "Chocolatey Auto-Update Framework",
+    "projects.p2.desc":  "Reusable GitHub Actions workflow for maintaining Chocolatey community packages. Handles upstream version polling, nuspec bumping, checksum updating, and submission to the Chocolatey Community Repository — fully unattended.",
+    "projects.p3.title": "WebLogic Silent Install Pipeline",
+    "projects.p3.desc":  "Azure DevOps pipeline for Oracle WebLogic Server installation and OPatch-based patching, using response-file driven silent installs. Eliminates manual patching across environments and documents the full patch lineage in pipeline logs.",
+
+    "contact.label": "// contact",
+    "contact.title": "Get in Touch",
+    "contact.desc":  "I'm open to DevOps, automation engineering, or IT roles in the Houston area. If you're hiring — or just want to talk shop about Chocolatey and PowerShell — drop me a line.",
+    "contact.email": "✉ Email me",
+
+    "footer.text": "Built with vanilla HTML · <a href='#'>View source</a> · Patrick Tremblay &copy; 2026"
+  },
+
+  fr: {
+    "nav.about":    "à propos",
+    "nav.skills":   "compétences",
+    "nav.projects": "projets",
+    "nav.contact":  "contact",
+
+    "hero.eyebrow": "whoami",
+    "hero.sub":     "Je conçois des <strong>pipelines d'automatisation Windows</strong>, je package des logiciels à grande échelle avec <strong>Chocolatey</strong>, et je connecte des workflows CI/CD dans <strong>Azure DevOps & GitHub Actions</strong>. Basé au Québec — relocalisation prévue à <strong>Houston, TX</strong> en 2025–26.",
+    "hero.cta1":    "Voir les projets",
+    "hero.cta2":    "Me contacter",
+    "hero.badge0":  "Disponible pour de nouvelles opportunités · Houston",
+
+    "about.label":  "// à propos",
+    "about.title":  "Parcours",
+    "about.p1":     "Professionnel TI avec une expérience concrète en <strong>déploiement logiciel d'entreprise, gestion des postes Windows</strong> et automatisation de pipelines. J'ai passé des années à packager, corriger et livrer des logiciels de façon fiable sur de grands parcs informatiques — en réduisant les efforts manuels et en rendant les déploiements reproductibles.",
+    "about.p2":     "En dehors de mon rôle principal, je maintiens des packages communautaires Chocolatey en open source et contribue des outils d'automatisation sur GitHub. Je suis passionné par le YAML propre, les scripts idempotents et les workflows qui fonctionnent du premier coup.",
+    "about.p3":     "Je cible activement des postes sur le marché de <strong>Houston, TX</strong> — en particulier dans les secteurs de l'énergie, de l'industrie ou des technologies qui valorisent une solide expertise Windows/DevOps.",
+    "about.facts.title":       "En bref",
+    "about.facts.loc.label":   "Localisation",
+    "about.facts.focus.label": "Domaine",
+    "about.facts.focus.val":   "DevOps · Packaging logiciel · Automatisation",
+    "about.facts.stack.label": "Stack principal",
+    "about.facts.certs.label": "Certifications visées",
+    "about.facts.lang.label":  "Langues",
+    "about.facts.lang.val":    "Français (natif) · Anglais (courant)",
+
+    "skills.label":         "// compétences & outils",
+    "skills.title":         "Stack technique",
+    "skills.cicd.title":    "CI/CD & Pipelines",
+    "skills.cicd.t4":       "Gabarits de pipeline",
+    "skills.pkg.title":     "Packaging logiciel",
+    "skills.pkg.t4":        "Installations silencieuses",
+    "skills.pkg.t5":        "Mise à jour automatique",
+    "skills.script.title":  "Scripting & Automatisation",
+    "skills.script.t4":     "Planification de tâches",
+    "skills.cloud.title":   "Infonuagique & Infrastructure",
+    "skills.cloud.t3":      "Gestion de VMs",
+    "skills.endpoint.title":"Gestion des postes de travail",
+    "skills.vcs.title":     "Contrôle de version & Outils",
+
+    "projects.label": "// projets",
+    "projects.title": "Réalisations",
+    "projects.p1.desc": "Package Chocolatey communautaire pour Eclipse Adoptium Temurin 25 (JDK). Détection automatique des versions, vérification des hachages et pipeline de publication via GitHub Actions. Maintient le package synchronisé avec les publications Adoptium sans intervention manuelle.",
+    "projects.p2.title": "Framework de mise à jour automatique Chocolatey",
+    "projects.p2.desc":  "Workflow GitHub Actions réutilisable pour la maintenance de packages Chocolatey communautaires. Gère l'interrogation des versions amont, la mise à jour du nuspec, la régénération des sommes de contrôle et la soumission au dépôt communautaire Chocolatey — entièrement sans supervision.",
+    "projects.p3.title": "Pipeline d'installation silencieuse WebLogic",
+    "projects.p3.desc":  "Pipeline Azure DevOps pour l'installation d'Oracle WebLogic Server et le correctif OPatch, en mode silencieux par fichier de réponse. Élimine les correctifs manuels entre les environnements et documente la chaîne complète de correctifs dans les journaux du pipeline.",
+
+    "contact.label": "// contact",
+    "contact.title": "Me contacter",
+    "contact.desc":  "Je suis ouvert à des postes DevOps, ingénierie d'automatisation ou TI dans la région de Houston. Que vous recrutiez — ou que vous vouliez simplement discuter Chocolatey et PowerShell — n'hésitez pas à m'écrire.",
+    "contact.email": "✉ M'écrire",
+
+    "footer.text": "Construit en HTML vanilla · <a href='#'>Voir le code</a> · Patrick Tremblay &copy; 2026"
+  }
+};
+
+// Typed titles per language
+const titles = {
+  en: [
+    'DevOps & Automation Engineer',
+    'Chocolatey Package Maintainer',
+    'PowerShell Automation Specialist',
+    'Windows Infrastructure Engineer'
+  ],
+  fr: [
+    'Ingénieur DevOps & Automatisation',
+    'Mainteneur de packages Chocolatey',
+    'Spécialiste PowerShell',
+    'Ingénieur infrastructure Windows'
+  ]
+};
+
+// ── STATE ─────────────────────────────────────────────────────
+let lang = 'en';
+
+function applyLang() {
+  const t = i18n[lang];
+
+  // Simple text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+
+  // innerHTML (for <strong> etc.)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+
+  // HTML lang attribute
+  document.documentElement.lang = lang;
+
+  // Page title
+  document.title = lang === 'fr'
+    ? 'Patrick Tremblay · Ingénieur DevOps & Automatisation'
+    : 'Patrick Tremblay · DevOps & Automation Engineer';
+
+  // Lang toggle UI
+  document.getElementById('langEN').className = lang === 'en' ? 'active' : '';
+  document.getElementById('langFR').className = lang === 'fr' ? 'active' : '';
+
+  // Reset typewriter for new language
+  resetTyper();
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'fr' : 'en';
+  applyLang();
+}
+
+// ── TYPEWRITER ────────────────────────────────────────────────
+const el = document.getElementById('typed-title');
+let ti = 0, ci = 0, deleting = false, typerTimer = null;
+
+function resetTyper() {
+  clearTimeout(typerTimer);
+  ti = 0; ci = 0; deleting = false;
+  el.innerHTML = '<span class="typed-cursor"></span>';
+  typerTimer = setTimeout(tick, 200);
+}
+
+function tick() {
+  const list = titles[lang];
+  const current = list[ti];
+  if (!deleting) {
+    el.innerHTML = current.slice(0, ++ci) + '<span class="typed-cursor"></span>';
+    if (ci === current.length) { deleting = true; typerTimer = setTimeout(tick, 2400); return; }
+  } else {
+    el.innerHTML = current.slice(0, --ci) + '<span class="typed-cursor"></span>';
+    if (ci === 0) { deleting = false; ti = (ti + 1) % list.length; }
+  }
+  typerTimer = setTimeout(tick, deleting ? 38 : 72);
+}
+
+// ── SCROLL FADE ───────────────────────────────────────────────
+const fadeEls = document.querySelectorAll('.skill-card, .project-card, .contact-box, .quick-facts');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = 1;
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+fadeEls.forEach(c => {
+  c.style.opacity = 0;
+  c.style.transform = 'translateY(16px)';
+  c.style.transition = 'opacity .4s ease, transform .4s ease, border-color .2s';
+  io.observe(c);
+});
+
+// ── INIT ──────────────────────────────────────────────────────
+applyLang();
+</script>
+</body>
+</html>
